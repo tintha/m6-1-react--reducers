@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { BookingContext } from "./BookingContext";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -20,12 +21,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormDialog() {
-  const [open, setOpen] = React.useState(false);
   const [creditCard, setCreditCard] = React.useState("");
   const [expiration, setExpiration] = React.useState("");
   const classes = useStyles();
   const {
-    state: { status },
     state: { error },
     state: { selectedSeatId },
     state: { price },
@@ -37,7 +36,6 @@ export default function FormDialog() {
 
   const handleClose = () => {
     cancelBookingProcess();
-    setOpen(false);
   };
 
   const handleChangeCredit = (e) => {
@@ -104,40 +102,64 @@ export default function FormDialog() {
           <DialogContentText>
             You are purchasing <b>1</b> ticket for the price of ${price}.
           </DialogContentText>
-          <DialogContentText>
-            Seat: {selectedSeatId} - Price ${price}
-          </DialogContentText>
+          <SeatDetailsContainer>
+            <SeatDetailsRow>
+              <DialogContentText>
+                <b>Row</b>
+              </DialogContentText>
+              <DialogContentText>
+                <b>Seat</b>
+              </DialogContentText>
+              <DialogContentText>
+                <b>Price</b>
+              </DialogContentText>
+            </SeatDetailsRow>
+            <SeatDetailsRow>
+              <DialogContentText>
+                {selectedSeatId && selectedSeatId.substring(0, 1)}
+              </DialogContentText>
+              <DialogContentText>
+                {selectedSeatId && selectedSeatId.match(/\d+/)}
+              </DialogContentText>
+              <DialogContentText>${price && price}</DialogContentText>
+            </SeatDetailsRow>
+          </SeatDetailsContainer>
           <DialogTitle id="form-dialog-title">
             Enter payment details
           </DialogTitle>
-
-          <TextField
-            id="credit-card"
-            label="Credit Card"
-            variant="outlined"
-            value={creditCard}
-            onChange={(e) => handleChangeCredit(e)}
-          />
-          <TextField
-            id="expiration"
-            label="Expiration"
-            variant="outlined"
-            value={expiration}
-            onChange={(e) => handleChangeExpiration(e)}
-          />
-          <Button
-            onClick={(e) => handlePurchase(e)}
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.margin}
-          >
-            Purchase
-          </Button>
+          <PaymentDetails>
+            <TextField
+              id="credit-card"
+              label="Credit Card"
+              variant="outlined"
+              value={creditCard}
+              onChange={(e) => handleChangeCredit(e)}
+            />
+            <TextField
+              id="expiration"
+              label="Expiration"
+              variant="outlined"
+              value={expiration}
+              onChange={(e) => handleChangeExpiration(e)}
+            />
+            <Button
+              onClick={(e) => handlePurchase(e)}
+              variant="contained"
+              size="large"
+              color="primary"
+              className={classes.margin}
+            >
+              Purchase
+            </Button>
+          </PaymentDetails>
         </DialogContent>
         <DialogActions>
           <Error>
-            <DialogContentText>{error}</DialogContentText>
+            <DialogContentText
+              style={{ color: "red", textAlign: "left", fontWeight: "bold" }}
+            >
+              {error}
+            </DialogContentText>
           </Error>
         </DialogActions>
       </Dialog>
@@ -150,5 +172,23 @@ const PaymentDetails = styled.div`
 `;
 
 const Error = styled.div`
-  display: block;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const SeatDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  margin: auto;
+`;
+
+const SeatDetailsRow = styled.div`
+  border-bottom: 1px solid gray;
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 `;
