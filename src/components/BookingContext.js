@@ -9,7 +9,6 @@ const initialState = {
 };
 
 function reducer(state, action) {
-  console.log(action);
   switch (action.type) {
     case "begin-booking-process": {
       return {
@@ -18,6 +17,15 @@ function reducer(state, action) {
         error: action.error,
         selectedSeatId: action.selectedSeatId,
         price: action.price,
+      };
+    }
+    case "cancel-booking-process": {
+      return {
+        ...state,
+        status: "idle",
+        error: null,
+        selectedSeatId: null,
+        price: null,
       };
     }
     default:
@@ -35,12 +43,19 @@ export const BookingProvider = ({ children }) => {
     });
   };
 
+  const cancelBookingProcess = () => {
+    dispatch({
+      type: "cancel-booking-process",
+    });
+  };
+
   return (
     <BookingContext.Provider
       value={{
         state,
         actions: {
           beginBookingProcess,
+          cancelBookingProcess,
         },
       }}
     >

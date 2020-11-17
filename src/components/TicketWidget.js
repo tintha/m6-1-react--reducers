@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { SeatContext } from "./SeatContext";
 import Seat from "./Seat";
-
+import FormDialog from "./PurchaseModal";
 import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
 
@@ -48,6 +48,7 @@ const TicketWidget = () => {
                   </SeatWrapper>
                 );
               })}
+              <FormDialog />
             </Row>
           );
         })
