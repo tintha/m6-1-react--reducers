@@ -9,6 +9,7 @@ const initialState = {
 };
 
 function reducer(state, action) {
+  console.log(action);
   switch (action.type) {
     case "begin-booking-process": {
       return {
@@ -23,6 +24,33 @@ function reducer(state, action) {
       return {
         ...state,
         status: "idle",
+        error: null,
+        selectedSeatId: null,
+        price: null,
+      };
+    }
+    case "purchase-ticket-request": {
+      return {
+        ...state,
+        status: "awaiting-response",
+        error: action.error,
+        selectedSeatId: action.selectedSeatId,
+        price: action.price,
+      };
+    }
+    case "purchase-ticket-failure": {
+      return {
+        ...state,
+        status: "error",
+        error: action.error,
+        selectedSeatId: action.selectedSeatId,
+        price: action.price,
+      };
+    }
+    case "purchase-ticket-success": {
+      return {
+        ...state,
+        status: "purchased",
         error: null,
         selectedSeatId: null,
         price: null,
@@ -43,9 +71,31 @@ export const BookingProvider = ({ children }) => {
     });
   };
 
-  const cancelBookingProcess = () => {
+  const cancelBookingProcess = (data) => {
     dispatch({
       type: "cancel-booking-process",
+      ...data,
+    });
+  };
+
+  const purchaseTicketRequest = (data) => {
+    dispatch({
+      type: "purchase-ticket-request",
+      ...data,
+    });
+  };
+
+  const purchaseTicketFailure = (data) => {
+    dispatch({
+      type: "purchase-ticket-failure",
+      ...data,
+    });
+  };
+
+  const purchaseTicketSuccess = (data) => {
+    dispatch({
+      type: "purchase-ticket-success",
+      ...data,
     });
   };
 
@@ -56,6 +106,9 @@ export const BookingProvider = ({ children }) => {
         actions: {
           beginBookingProcess,
           cancelBookingProcess,
+          purchaseTicketRequest,
+          purchaseTicketFailure,
+          purchaseTicketSuccess,
         },
       }}
     >
