@@ -9,7 +9,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { BookingContext } from "./BookingContext";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
-import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -100,7 +99,8 @@ export default function FormDialog() {
         <DialogTitle id="form-dialog-title">Purchase ticket</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You are purchasing <b>1</b> ticket for the price of ${price}.
+            You are purchasing <b>1</b> ticket for the price of $
+            {price && price}.
           </DialogContentText>
           <SeatDetailsContainer>
             <SeatDetailsRow>
