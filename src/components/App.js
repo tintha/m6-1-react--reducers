@@ -12,10 +12,7 @@ function App() {
   React.useEffect(() => {
     fetch("/api/seat-availability")
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        receiveSeatInfoFromServer(data);
-      });
+      .then((data) => receiveSeatInfoFromServer(data));
   }, []);
 
   return (
