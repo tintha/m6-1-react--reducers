@@ -7,10 +7,20 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { BookingContext } from "./BookingContext";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
-
+  const classes = useStyles();
   const {
     state: { status },
     state: { error },
@@ -33,22 +43,27 @@ export default function FormDialog() {
       >
         <DialogTitle id="form-dialog-title">Purchase ticket</DialogTitle>
         <DialogContent>
-          <DialogContentText>Seat: {selectedSeatId}</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="credit"
-            label="Credit Card"
-            type="credit"
-            fullWidth
-          />
+          <DialogContentText>
+            You are purchasing <b>1</b> ticket for the price of ${price}.
+          </DialogContentText>
+          <DialogContentText>
+            Seat: {selectedSeatId} - Price ${price}
+          </DialogContentText>
+          <DialogTitle id="form-dialog-title">
+            Enter payment details
+          </DialogTitle>
+          <TextField id="credit-card" label="Credit Card" variant="outlined" />
+          <TextField id="expiration" label="Expiration" variant="outlined" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button
+            onClick={handleClose}
+            variant="contained"
+            size="large"
+            color="primary"
+            className={classes.margin}
+          >
+            Purchase
           </Button>
         </DialogActions>
       </Dialog>
