@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { BookingContext } from "./BookingContext";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -24,6 +25,7 @@ export default function FormDialog() {
   const [expiration, setExpiration] = React.useState("");
   const classes = useStyles();
   const {
+    state: { status },
     state: { error },
     state: { selectedSeatId },
     state: { price },
@@ -155,6 +157,7 @@ export default function FormDialog() {
         </DialogContent>
         <DialogActions>
           <Error>
+            {status === "awaiting-response" && <CircularProgress />}
             <DialogContentText
               style={{ color: "red", textAlign: "left", fontWeight: "bold" }}
             >
